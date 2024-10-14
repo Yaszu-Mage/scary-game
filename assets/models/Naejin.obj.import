@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://erbgclvex5su"
+path="res://.godot/imported/Naejin.obj-e3b7d60ae2397efc4ed728a4153991db.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Naejin.obj-e3b7d60ae2397efc4ed728a4153991db.mesh"]
+
+source_file="res://assets/models/Naejin.obj"
+dest_files=["res://.godot/imported/Naejin.obj-e3b7d60ae2397efc4ed728a4153991db.mesh", "res://.godot/imported/Naejin.obj-e3b7d60ae2397efc4ed728a4153991db.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

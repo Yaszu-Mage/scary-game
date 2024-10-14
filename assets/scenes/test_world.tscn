@@ -1,0 +1,62 @@
+[gd_scene load_steps=10 format=3 uid="uid://b6sk61dm22sdv"]
+
+[ext_resource type="PackedScene" uid="uid://d15ug4dn8ohlv" path="res://assets/scenes/ron.tscn" id="1_uqwtc"]
+
+[sub_resource type="Gradient" id="Gradient_hxay7"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.17, 0.96)
+colors = PackedColorArray(0, 0, 0, 1, 0.391147, 0.306616, 0.290207, 1, 1, 1, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_urmlg"]
+gradient = SubResource("Gradient_hxay7")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_32i1d"]
+sky_horizon_color = Color(0.0981088, 0.101588, 0.10708, 1)
+sky_energy_multiplier = 0.0
+sky_cover_modulate = Color(0, 0, 0, 1)
+ground_horizon_color = Color(0.0568285, 0.0593803, 0.0634085, 1)
+
+[sub_resource type="Sky" id="Sky_csu20"]
+sky_material = SubResource("ProceduralSkyMaterial_32i1d")
+
+[sub_resource type="Environment" id="Environment_vnssp"]
+background_mode = 2
+sky = SubResource("Sky_csu20")
+tonemap_mode = 2
+glow_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.10407, 0.0302318, 0.00603414, 1)
+fog_density = 0.2072
+fog_height_density = 16.0
+adjustment_enabled = true
+adjustment_color_correction = SubResource("GradientTexture2D_urmlg")
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_e5pxx"]
+dof_blur_far_enabled = true
+dof_blur_far_distance = 25.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_uectn"]
+size = Vector2(32, 32)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_7ycra"]
+
+[node name="test_world" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_vnssp")
+camera_attributes = SubResource("CameraAttributesPractical_e5pxx")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Ron" parent="." instance=ExtResource("1_uqwtc")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.33592, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("PlaneMesh_uectn")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("WorldBoundaryShape3D_7ycra")

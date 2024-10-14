@@ -1,0 +1,193 @@
+[gd_scene load_steps=10 format=3 uid="uid://d15ug4dn8ohlv"]
+
+[sub_resource type="GDScript" id="GDScript_ewjal"]
+script/source = "extends CharacterBody3D
+## Getting Variables
+@onready var cam = $pivot
+const SPEED = 5.0
+const JUMP_VELOCITY = 4.5
+var stanky = false
+var dash_speed = 4
+
+var slide_multiplier = 4
+
+var ismakingnoise = false
+var mouse_sensitivity = 0.002
+var joy_sense = 0.2
+var stamina = 1000
+var double_jump = false
+var jetpack_fuel = 100
+var sprintmulti = 1
+var last_dir = Vector3.ZERO
+@onready var anim = $AnimationPlayer
+func _ready():
+	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+#Sprint and Movement
+func _physics_process(delta):
+	if Input.is_action_pressed(\"sprint\") and stamina > 1 or Input.is_action_pressed(\"dash\") and stamina > 1:
+		#Sprint multiplier increases with button
+		cam.fov = lerp(cam.fov,90.0,delta * 2)
+		sprintmulti = 1.2
+		stamina -= 1
+		if Input.is_action_pressed(\"dash\"):
+			stamina -= 10
+		$pivot/ProgressBar.value = stamina
+	else:
+		cam.fov = lerp(cam.fov,75.0,delta * 2)
+		sprintmulti = 1
+		stamina += 0.5
+		$pivot/ProgressBar.value = stamina
+	if not is_on_floor():
+		velocity += get_gravity() * delta
+	if is_on_floor():
+		double_jump = false
+
+	# Handle jump.
+	if Input.is_action_just_pressed(\"ui_accept\") and is_on_floor():
+		velocity.y = JUMP_VELOCITY
+	elif  Input.is_action_just_pressed(\"ui_accept\") and !double_jump:
+		velocity.y = JUMP_VELOCITY
+		double_jump = true
+		print(\"double jump\")
+	if Input.is_action_just_pressed(\"shmack\"):
+		anim.play(\"shmack\")
+	# Get the input direction and handle the movement/deceleration.
+	# As good practice, you should replace UI actions with custom gameplay actions.
+	var input_dir = Input.get_vector(\"ui_left\", \"ui_right\", \"ui_up\", \"ui_down\")
+	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	
+	if direction:
+		velocity.x = direction.x * SPEED * sprintmulti
+		velocity.z = direction.z * SPEED * sprintmulti
+		last_dir = direction
+	elif Input.is_action_pressed(\"dash\"):
+		velocity.x = last_dir.x * SPEED * sprintmulti * slide_multiplier
+		velocity.z = last_dir.z * SPEED * sprintmulti * slide_multiplier
+	else:
+		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.z = move_toward(velocity.z, 0, SPEED)
+
+	move_and_slide()
+
+
+
+func _input(event):
+	if event is InputEventMouseMotion and Input.get_mouse_mode() == Input.MOUSE_MODE_CAPTURED:
+		rotate_y(-event.relative.x * mouse_sensitivity)
+		cam.rotate_x(-event.relative.y * mouse_sensitivity)
+		cam.rotation.x = clamp(cam.rotation.x, -1.2,1.2)
+	if event is InputEventJoypadMotion and Input.get_joy_axis(0,JOY_AXIS_RIGHT_X) and event is InputEventJoypadMotion and Input.get_joy_axis(0,JOY_AXIS_RIGHT_Y):
+			rotate_y(-Input.get_joy_axis(0,JOY_AXIS_RIGHT_X) * (mouse_sensitivity * 100))
+			cam.rotate_x(-Input.get_joy_axis(0,JOY_AXIS_RIGHT_Y) * (mouse_sensitivity * 100))
+			cam.rotation.x = clamp(cam.rotation.x, -1.2,1.2)
+	if event.is_action_pressed(\"ui_end\"):
+		get_tree().quit()
+"
+
+[sub_resource type="BoxMesh" id="BoxMesh_a5k3j"]
+
+[sub_resource type="GDScript" id="GDScript_npk3j"]
+script/source = "extends MeshInstance3D
+var bullet = preload(\"res://assets/scenes/bullet.tscn\")
+@onready var parent = $\"..\"
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	if Input.is_action_just_pressed(\"shoot\"):
+		#shoot
+		var bulletscene = bullet.instantiate()
+		parent.get_parent().add_child(bulletscene)
+		var angle = parent.get_rotation().y
+		var tanangle = parent.get_rotation().x
+		bulletscene.position = $\"../pivot/bulletspawn\".global_position
+		bulletscene.dir = -Vector3(sin(angle),0,cos(angle))
+		bulletscene.variablesinstantiated = true
+"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_pmith"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_xglqs"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_pb48l"]
+
+[sub_resource type="Animation" id="Animation_36d46"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D2:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_yeeta"]
+resource_name = "shmack"
+length = 0.3
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D2:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-1.5708, 0, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_xkdww"]
+_data = {
+"RESET": SubResource("Animation_36d46"),
+"shmack": SubResource("Animation_yeeta")
+}
+
+[node name="Ron" type="CharacterBody3D" groups=["alive"]]
+script = SubResource("GDScript_ewjal")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.25, 0, 0, 0, 3, 0, 0, 0, 0.25, 1.1724, -0.1147, -1.41057)
+mesh = SubResource("BoxMesh_a5k3j")
+skeleton = NodePath("")
+script = SubResource("GDScript_npk3j")
+
+[node name="AnimatableBody3D" type="AnimatableBody3D" parent="MeshInstance3D2"]
+transform = Transform3D(4, 0, 0, 0, 0.333333, 0, 0, 0, 4, -4.6896, 0.241151, 5.64228)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/AnimatableBody3D"]
+transform = Transform3D(0.25, 0, 0, 0, 3, 0, 0, 0, 0.25, 1.17688, -0.732557, -1.40556)
+shape = SubResource("BoxShape3D_pmith")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_xglqs")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_pb48l")
+
+[node name="pivot" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.608752, 0)
+
+[node name="ProgressBar" type="ProgressBar" parent="pivot"]
+offset_left = 31.0
+offset_top = 19.0
+offset_right = 35.0
+offset_bottom = 46.0
+max_value = 1000.0
+value = 1000.0
+
+[node name="bulletspawn" type="Marker3D" parent="pivot"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0852811, 0, -1.34665)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_xkdww")
+}
