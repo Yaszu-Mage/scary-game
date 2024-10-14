@@ -90,6 +90,8 @@ func _input(event):
 script/source = "extends MeshInstance3D
 var bullet = preload(\"res://assets/scenes/bullet.tscn\")
 @onready var parent = $\"..\"
+@onready var pivot = $\"../pivot\"
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	pass # Replace with function body.
@@ -102,9 +104,9 @@ func _process(delta):
 		var bulletscene = bullet.instantiate()
 		parent.get_parent().add_child(bulletscene)
 		var angle = parent.get_rotation().y
-		var tanangle = parent.get_rotation().x
+		var tanangle = pivot.get_rotation().x
 		bulletscene.position = $\"../pivot/bulletspawn\".global_position
-		bulletscene.dir = -Vector3(sin(angle),0,cos(angle))
+		bulletscene.dir = -Vector3(sin(angle),-tan(tanangle),cos(angle))
 		bulletscene.variablesinstantiated = true
 "
 

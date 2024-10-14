@@ -18,13 +18,25 @@ func _physics_process(delta):
 	if variablesinstantiated:
 		
 		move_and_collide(linear_velocity.move_toward(dir, delta*1987))
+
+
+
+func _on_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
+	self.queue_free()
+
+func kill():
+	self.queue_free()
+
+func _on_body_entered(body):
+	self.queue_free()
 "
 
 [sub_resource type="BoxMesh" id="BoxMesh_ubi1n"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_mc5l1"]
 
-[node name="RigidBody3D" type="RigidBody3D"]
+[node name="RigidBody3D" type="RigidBody3D" groups=["bullet"]]
+contact_monitor = true
 script = SubResource("GDScript_judhh")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
@@ -32,3 +44,6 @@ mesh = SubResource("BoxMesh_ubi1n")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_mc5l1")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_shape_entered" from="." to="." method="_on_body_shape_entered"]

@@ -10,8 +10,6 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	if Input.is_action_just_pressed("dash"):
-		_ready()
 	if Input.is_action_just_pressed("check") and checker == true:
 		print("check passed")
 		passed = true
@@ -30,3 +28,4 @@ func _on_area_2d_area_exited(area):
 func _on_animation_player_animation_finished(anim_name):
 	if passed == false:
 		print("check failed")
+	self.queue_free()

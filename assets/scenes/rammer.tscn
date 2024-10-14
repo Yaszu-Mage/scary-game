@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://nv8hj0huqp8d"]
+
+[ext_resource type="Script" path="res://assets/scripts/rammer.gd" id="1_eppa8"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3pck4"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_gmknj"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_4m3oo"]
+radius = 4.0
+
+[node name="CharacterBody3D" type="CharacterBody3D"]
+script = ExtResource("1_eppa8")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_3pck4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_gmknj")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_4m3oo")
+
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
