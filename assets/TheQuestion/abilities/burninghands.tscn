@@ -1,0 +1,63 @@
+[gd_scene load_steps=8 format=3 uid="uid://dsmpq3lih2ff3"]
+
+[ext_resource type="PlaneMesh" uid="uid://cv16wbaamaupy" path="res://assets/models/flamemesh.tres" id="1_ekb3i"]
+[ext_resource type="Material" uid="uid://tmyh16peeg3t" path="res://assets/materials/fireparticle.tres" id="2_swq6v"]
+[ext_resource type="Script" path="res://assets/abilities/burninghands.gd" id="3_lmtqs"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_22bfy"]
+lifetime_randomness = 1.0
+emission_shape = 6
+emission_ring_axis = Vector3(0, 0, 1)
+emission_ring_height = 1.0
+emission_ring_radius = 1.0
+emission_ring_inner_radius = 0.0
+flatness = 1.0
+radial_velocity_max = 2.0
+gravity = Vector3(0, 0, 0)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_ov786"]
+material = ExtResource("2_swq6v")
+flip_faces = true
+size = Vector2(0.5, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_1ejxe"]
+size = Vector3(2.85278, 1.26709, 2.35693)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_lrk6v"]
+
+[node name="burninghands" type="CharacterBody3D"]
+collision_layer = 2
+script = ExtResource("3_lmtqs")
+
+[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+amount = 32
+process_material = SubResource("ParticleProcessMaterial_22bfy")
+draw_passes = 2
+draw_pass_1 = ExtResource("1_ekb3i")
+draw_pass_2 = SubResource("PlaneMesh_ov786")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="GPUParticles3D"]
+mesh = ExtResource("1_ekb3i")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="GPUParticles3D"]
+transform = Transform3D(-1, 7.64274e-15, 8.74228e-08, 0, -1, 8.74228e-08, 8.74228e-08, 8.74228e-08, 1, 0, 0, 0)
+mesh = ExtResource("1_ekb3i")
+
+[node name="Area3D" type="Area3D" parent="GPUParticles3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="GPUParticles3D/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0264893, 0.133545, 0.127686)
+shape = SubResource("BoxShape3D_1ejxe")
+
+[node name="Timer" type="Timer" parent="GPUParticles3D"]
+wait_time = 5.0
+autostart = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_lrk6v")
+
+[connection signal="input_event" from="." to="." method="_on_input_event"]
+[connection signal="body_entered" from="GPUParticles3D/Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_entered" from="GPUParticles3D/Area3D" to="GPUParticles3D" method="_on_area_3d_body_entered"]
+[connection signal="timeout" from="GPUParticles3D/Timer" to="GPUParticles3D" method="_on_timer_timeout"]

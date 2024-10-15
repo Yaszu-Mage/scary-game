@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://kolci6mx8is2"
+path="res://.godot/imported/MAP2.obj-70145eafef50663a1937bc049d4557df.mesh"
+
+[deps]
+
+files=["res://.godot/imported/MAP2.obj-70145eafef50663a1937bc049d4557df.mesh"]
+
+source_file="res://assets/TheQuestion/models/MAP2.obj"
+dest_files=["res://.godot/imported/MAP2.obj-70145eafef50663a1937bc049d4557df.mesh", "res://.godot/imported/MAP2.obj-70145eafef50663a1937bc049d4557df.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

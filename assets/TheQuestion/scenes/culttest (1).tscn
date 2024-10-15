@@ -1,0 +1,196 @@
+[gd_scene load_steps=21 format=3 uid="uid://dq4u85i2r01v6"]
+
+[ext_resource type="Script" path="res://assets/scripts/culttest.gd" id="1_0a2fk"]
+[ext_resource type="PackedScene" uid="uid://bntmohoranb68" path="res://assets/scenes/cultplayer.tscn" id="1_k056e"]
+[ext_resource type="Script" path="res://assets/scripts/npc.gd" id="3_p6ppd"]
+[ext_resource type="Texture2D" uid="uid://dv586hkbn6xgs" path="res://assets/images/interactbutton.png" id="4_aqb4h"]
+[ext_resource type="Script" path="res://assets/scripts/enemy.gd" id="5_3b1e4"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3lmfa"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_fdsid"]
+sky_material = SubResource("ProceduralSkyMaterial_3lmfa")
+
+[sub_resource type="Environment" id="Environment_1mwva"]
+background_mode = 2
+sky = SubResource("Sky_fdsid")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_hc6av"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_w2730"]
+size = Vector2(16, 16)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_uow4j"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_f4nfl"]
+radius = 3.46054
+
+[sub_resource type="BoxMesh" id="BoxMesh_bga6e"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_fbt1h"]
+albedo_texture = ExtResource("4_aqb4h")
+texture_filter = 0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_hw812"]
+material = SubResource("StandardMaterial3D_fbt1h")
+size = Vector2(0.5, 0.5)
+orientation = 2
+
+[sub_resource type="GDScript" id="GDScript_6gftq"]
+script/source = "extends StaticBody3D
+var interactable = false
+var bod = null
+var isnottalking = true
+# Called when the node enters the scene tree for the first time.
+func _ready():
+	pass # Replace with function body.
+
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+	if bod:
+		if bod.select == self:
+			$MeshInstance3D2.visible = true
+		else:
+			$MeshInstance3D2.visible = false
+
+
+func _on_area_3d_body_entered(body):
+	if body.is_in_group(\"player\"):
+		interactable = true
+		$MeshInstance3D2.visible = true
+		bod = body
+		bod.selected.append(self)
+		bod.select = self
+		
+func _input(event):
+	if interactable and event.is_action_pressed(\"interact\") and isnottalking and bod.select == self:
+		bod.yapico.visible = true
+		bod.yapui.visible = true
+		isnottalking = false
+		print(bod.select, \" \", bod.selected)
+		yap.yap(bod.yapui,\"Life isnt so bad :D\",\"Jark\",bod.yapico)
+		await global.yapped
+		isnottalking = true
+
+
+func _on_area_3d_body_exited(body):
+	if bod == body:
+		$MeshInstance3D2.visible = false
+		interactable = false
+		bod.selected.erase(self)
+		bod.select = null
+		print(bod.select,\" \", bod.selected)
+		bod.yapico.visible = false
+		bod.yapui.visible = false
+"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_8p6xy"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_pqo1n"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_qdkb1"]
+radius = 3.0
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_6l61c"]
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_0a2fk")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_1mwva")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("WorldBoundaryShape3D_hc6av")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+mesh = SubResource("PlaneMesh_w2730")
+
+[node name="Node3D" parent="." instance=ExtResource("1_k056e")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="GridMap" type="GridMap" parent="."]
+
+[node name="Npc" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.568797, -5.92803)
+script = ExtResource("3_p6ppd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Npc"]
+shape = SubResource("BoxShape3D_uow4j")
+
+[node name="Area3D" type="Area3D" parent="Npc" groups=["npc"]]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Npc/Area3D"]
+shape = SubResource("SphereShape3D_f4nfl")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Npc"]
+mesh = SubResource("BoxMesh_bga6e")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Npc"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.26761, 0)
+visible = false
+mesh = SubResource("PlaneMesh_hw812")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Npc/MeshInstance3D2"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+mesh = SubResource("PlaneMesh_hw812")
+skeleton = NodePath("../..")
+
+[node name="Npc2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.91846, 0.568797, -4.74338)
+script = SubResource("GDScript_6gftq")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Npc2"]
+shape = SubResource("BoxShape3D_uow4j")
+
+[node name="Area3D" type="Area3D" parent="Npc2" groups=["npc"]]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Npc2/Area3D"]
+shape = SubResource("SphereShape3D_f4nfl")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Npc2"]
+mesh = SubResource("BoxMesh_bga6e")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Npc2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.26761, 0)
+visible = false
+mesh = SubResource("PlaneMesh_hw812")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Npc2/MeshInstance3D2"]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
+mesh = SubResource("PlaneMesh_hw812")
+skeleton = NodePath("../..")
+
+[node name="Enemy" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.69875, 7.10574)
+script = ExtResource("5_3b1e4")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemy"]
+shape = SubResource("BoxShape3D_8p6xy")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="Enemy"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Enemy"]
+mesh = SubResource("BoxMesh_pqo1n")
+
+[node name="Area3D" type="Area3D" parent="Enemy"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Enemy/Area3D"]
+shape = SubResource("SphereShape3D_qdkb1")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_6l61c")
+
+[connection signal="body_entered" from="Npc/Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_entered" from="Npc/Area3D" to="Npc" method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Npc/Area3D" to="Npc" method="_on_area_3d_body_exited"]
+[connection signal="body_entered" from="Npc2/Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_entered" from="Npc2/Area3D" to="Npc2" method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Npc2/Area3D" to="Npc2" method="_on_area_3d_body_exited"]
+[connection signal="body_entered" from="Enemy/Area3D" to="Enemy" method="_on_area_3d_body_entered"]

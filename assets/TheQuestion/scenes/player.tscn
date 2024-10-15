@@ -1,0 +1,44 @@
+[gd_scene load_steps=8 format=3 uid="uid://cu2ylcby4dwvr"]
+
+[ext_resource type="Texture2D" uid="uid://ce0d3ur1xpuqj" path="res://assets/images/headicon.png" id="1_gsm2c"]
+[ext_resource type="Script" path="res://assets/scripts/player.gd" id="1_r4ou4"]
+[ext_resource type="PackedScene" uid="uid://da0x5dwj0heq1" path="res://assets/scenes/ui.tscn" id="3_s304u"]
+[ext_resource type="Script" path="res://assets/scripts/gun.gd" id="4_fewa1"]
+[ext_resource type="Texture2D" uid="uid://br5rwuux1w7br" path="res://assets/images/knife.png" id="4_ud8be"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_20er1"]
+size = Vector2(45, 45)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1d61r"]
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_r4ou4")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0.5)
+shape = SubResource("RectangleShape2D_20er1")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+scale = Vector2(3, 3)
+texture = ExtResource("1_gsm2c")
+
+[node name="UI" parent="." instance=ExtResource("3_s304u")]
+
+[node name="Marker2D" type="Marker2D" parent="."]
+
+[node name="gun" type="StaticBody2D" parent="Marker2D"]
+position = Vector2(0, 42)
+collision_layer = 2
+collision_mask = 2
+script = ExtResource("4_fewa1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Marker2D/gun"]
+shape = SubResource("RectangleShape2D_1d61r")
+
+[node name="knife" type="Sprite2D" parent="Marker2D/gun"]
+rotation = 3.14159
+texture = ExtResource("4_ud8be")
+
+[node name="Marker2D" type="Marker2D" parent="Marker2D/gun"]
+position = Vector2(0, 21)

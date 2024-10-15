@@ -36,7 +36,6 @@ func _on_body_entered(body):
 [sub_resource type="BoxShape3D" id="BoxShape3D_mc5l1"]
 
 [node name="RigidBody3D" type="RigidBody3D" groups=["bullet"]]
-contact_monitor = true
 script = SubResource("GDScript_judhh")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]

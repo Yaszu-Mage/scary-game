@@ -1,8 +1,8 @@
 [gd_scene load_steps=9 format=3 uid="uid://cto5lf6r3mumb"]
 
-[ext_resource type="Script" path="res://assets/scripts/static_check.gd" id="1_rn4yx"]
-[ext_resource type="Texture2D" uid="uid://dp0wfyq5q61tu" path="res://assets/images/check.png" id="2_7ivp2"]
-[ext_resource type="Texture2D" uid="uid://cbpvh25w2ufxu" path="res://assets/images/checkerchecker.png" id="3_oaqpf"]
+[ext_resource type="Script" path="res://assets/scripts/static_check.gd" id="1_06h58"]
+[ext_resource type="Texture2D" uid="uid://dp0wfyq5q61tu" path="res://assets/images/check.png" id="2_ym38w"]
+[ext_resource type="Texture2D" uid="uid://cbpvh25w2ufxu" path="res://assets/images/checkerchecker.png" id="3_1iksv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dhvyr"]
 
@@ -48,10 +48,10 @@ size = Vector2(14, 20)
 
 [node name="Node2D" type="Node2D"]
 position = Vector2(7, 15)
-script = ExtResource("1_rn4yx")
+script = ExtResource("1_06h58")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_7ivp2")
+texture = ExtResource("2_ym38w")
 
 [node name="Area2D" type="Area2D" parent="Sprite2D" groups=["checker"]]
 
@@ -66,7 +66,7 @@ speed_scale = 2.0
 
 [node name="Sprite2D2" type="Sprite2D" parent="."]
 position = Vector2(36, 0)
-texture = ExtResource("3_oaqpf")
+texture = ExtResource("3_1iksv")
 
 [node name="Area2D" type="Area2D" parent="Sprite2D2" groups=["checker"]]
 
