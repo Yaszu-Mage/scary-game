@@ -4,38 +4,43 @@
 
 [sub_resource type="GDScript" id="GDScript_5cm0u"]
 script/source = "extends CharacterBody3D
-
-@onready var agent: NavigationAgent3D = $NavigationAgent3D
-var gravity = ProjectSettings.get_setting(\"physics/3d/default_gravity\")
-const SPEED = 5.0
-const JUMP_VELOCITY = 4.5
-@export var movement_speed: float = 50.0
-var movement_delta: float
-var vel = Vector3.ZERO
 var bod = null
-func _physics_process(delta: float) -> void:
-	movement_delta = movement_speed * delta
-	var next_path_position = agent.get_next_path_position()
-	var new_velocity: Vector3 = global_position.direction_to(next_path_position) * movement_delta
-	if agent.avoidance_enabled:
-		agent.set_velocity(new_velocity)
-	else:
-		_on_navigation_agent_3d_velocity_computed(new_velocity)
-	if !is_on_floor():
-		velocity.y = gravity * -1
+var target_pos : Vector3
+var SPEED = 5.0
+func _physics_process(delta):
+	if bod:
+		if bod.stanky or bod.ismakingnoise:
+			tracker_tick()
+			global_position.x = self.global_position.lerp(target_pos, delta / 2).x
+			global_position.z = self.global_position.lerp(target_pos, delta / 2).z
+			look_at(target_pos)
+			rotation.x = 0
+		else:
+			search()
+			global_position.x = self.global_position.lerp(target_pos, delta / 2).x
+			global_position.z = self.global_position.lerp(target_pos, delta / 2).z
+			rotation.x = 0
+	if not is_on_floor():
+		velocity += get_gravity() * delta
 	move_and_slide()
 
 
-func _on_area_3d_body_entered(body: Node3D) -> void:
+func _on_area_3d_body_entered(body):
 	if body.is_in_group(\"alive\"):
 		bod = body
-		print(\"tracking!\")
-		npclogic.track(agent,self,5,self.global_position,Vector3(0,-1.554,7.106),body.position)
+		
 
+func tracker_tick():
+	if bod:
+		target_pos = bod.global_position
 
-func _on_navigation_agent_3d_velocity_computed(safe_velocity: Vector3) -> void:
-	velocity = safe_velocity
-	move_and_slide()
+func search():
+	target_pos = Vector3(randf_range(self.global_position.x,self.global_position.x + randf_range(1,5)),randf_range(self.global_position.y,self.global_position.y + randf_range(1,5)),randf_range(self.global_position.z,self.global_position.z + randf_range(1,5)))
+
+func _on_area_3d_body_exited(body):
+	if bod:
+		if bod == body:
+			bod = null
 "
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_61eqe"]
