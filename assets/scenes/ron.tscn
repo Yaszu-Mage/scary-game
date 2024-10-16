@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://d15ug4dn8ohlv"]
+[gd_scene load_steps=11 format=3 uid="uid://d15ug4dn8ohlv"]
 
 [sub_resource type="GDScript" id="GDScript_ewjal"]
 script/source = "extends CharacterBody3D
@@ -10,6 +10,8 @@ var stanky = false
 var dash_speed = 4
 
 var slide_multiplier = 4
+@onready var pivot = $pivot
+@onready var animation_player = $AnimationPlayer
 
 var ismakingnoise = false
 var mouse_sensitivity = 0.002
@@ -21,6 +23,7 @@ var sprintmulti = 1
 var last_dir = Vector3.ZERO
 @onready var anim = $AnimationPlayer
 func _ready():
+	anim.play(\"spawn\")
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 #Sprint and Movement
 func _physics_process(delta):
@@ -132,6 +135,30 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector3(0, 0, 0)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("pivot:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(-1.5708, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("pivot:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 5.9302, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_yeeta"]
 resource_name = "shmack"
@@ -149,10 +176,38 @@ tracks/0/keys = {
 "values": [Vector3(0, 0, 0), Vector3(-1.5708, 0, 0), Vector3(0, 0, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_4u36b"]
+resource_name = "spawn"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("pivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(-1.5708, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("pivot:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 5.9302, 0), Vector3(0, 0, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_xkdww"]
 _data = {
 "RESET": SubResource("Animation_36d46"),
-"shmack": SubResource("Animation_yeeta")
+"shmack": SubResource("Animation_yeeta"),
+"spawn": SubResource("Animation_4u36b")
 }
 
 [node name="Ron" type="CharacterBody3D" groups=["alive"]]
@@ -178,7 +233,7 @@ mesh = SubResource("CapsuleMesh_xglqs")
 shape = SubResource("CapsuleShape3D_pb48l")
 
 [node name="pivot" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.608752, 0)
+transform = Transform3D(1, 0, 0, 0, -3.61999e-06, 1, 0, -1, -3.61999e-06, 0, 5.9302, 0)
 
 [node name="ProgressBar" type="ProgressBar" parent="pivot"]
 offset_left = 31.0

@@ -1,0 +1,62 @@
+[gd_scene load_steps=4 format=3 uid="uid://drh6d8uhmwpym"]
+
+[ext_resource type="PackedScene" uid="uid://fgf7e3mejxnu" path="res://assets/models/Naejin/Naejin.fbx" id="1_05gsm"]
+[ext_resource type="AnimationLibrary" uid="uid://3xmia4cg8dcq" path="res://assets/scenes/naejintest/naejin.tres" id="2_60vbd"]
+[ext_resource type="Script" path="res://assets/scripts/naejin_root.gd" id="2_jxq20"]
+
+[node name="Naejin" instance=ExtResource("1_05gsm")]
+script = ExtResource("2_jxq20")
+
+[node name="Skeleton3D" parent="." index="0"]
+bones/0/position = Vector3(0.000251612, 0.0852339, 0.000306487)
+bones/0/rotation = Quaternion(-0.00219761, 2.92346e-05, -0.00985412, 0.999949)
+bones/1/rotation = Quaternion(0.312939, 0.0023975, 0.00359702, 0.949763)
+bones/2/rotation = Quaternion(0.1747, 0.00538135, 0.00704486, 0.984582)
+bones/3/rotation = Quaternion(0.109688, 0.00499501, 0.00712311, 0.993928)
+bones/4/rotation = Quaternion(-0.14699, -0.00773833, 0.00227344, 0.989105)
+bones/5/rotation = Quaternion(-0.188705, 0.0236753, -0.0174357, 0.981594)
+bones/7/rotation = Quaternion(0.680146, 0.47907, -0.324477, 0.45012)
+bones/8/rotation = Quaternion(0.0384591, -0.229454, 0.282146, 0.930734)
+bones/9/rotation = Quaternion(0.0228882, 0.0572887, 0.460241, 0.885648)
+bones/10/rotation = Quaternion(-0.00432135, -0.55161, 0.19628, 0.810667)
+bones/11/rotation = Quaternion(0.356286, 0.424201, 0.0289178, 0.832032)
+bones/12/rotation = Quaternion(-0.0427758, -0.0131949, -0.104805, 0.993485)
+bones/13/rotation = Quaternion(-0.0545098, 0.0278768, -0.156001, 0.985858)
+bones/15/rotation = Quaternion(0.229521, -0.0127086, -0.0787962, 0.970026)
+bones/16/rotation = Quaternion(0.190207, 0.000414029, -0.0186236, 0.981567)
+bones/17/rotation = Quaternion(0.235773, 0.00302608, -0.00466198, 0.971792)
+bones/19/rotation = Quaternion(0.229712, -0.0102764, -0.0777391, 0.970095)
+bones/20/rotation = Quaternion(0.190308, 0.000493518, -0.0183294, 0.981553)
+bones/21/rotation = Quaternion(0.190317, 0.000121916, -0.0142002, 0.98162)
+bones/23/rotation = Quaternion(0.229709, -0.0101369, -0.0775809, 0.970109)
+bones/24/rotation = Quaternion(0.1903, 0.000497968, -0.0184266, 0.981553)
+bones/25/rotation = Quaternion(0.190309, 9.78668e-05, -0.0142048, 0.981622)
+bones/27/rotation = Quaternion(0.662276, -0.48598, 0.361797, 0.440813)
+bones/28/rotation = Quaternion(0.0391951, -0.109292, -0.286027, 0.951161)
+bones/29/rotation = Quaternion(-0.370995, 0.109419, -0.415126, 0.823444)
+bones/30/rotation = Quaternion(0.0789494, 0.568134, -0.0395398, 0.818186)
+bones/31/rotation = Quaternion(0.410911, -0.464253, -0.102248, 0.777925)
+bones/32/rotation = Quaternion(-0.0602346, -0.0325745, 0.106224, 0.991982)
+bones/33/rotation = Quaternion(-0.0841285, -0.117346, 0.138003, 0.979851)
+bones/35/rotation = Quaternion(0.362782, -0.153907, 0.0462006, 0.917915)
+bones/36/rotation = Quaternion(0.274046, 0.00824502, -0.0893956, 0.957517)
+bones/37/rotation = Quaternion(0.104787, 0.0358016, -0.124657, 0.986001)
+bones/39/rotation = Quaternion(0.32899, 0.0334447, 0.0120965, 0.943663)
+bones/40/rotation = Quaternion(0.267345, -0.00224394, 0.0234256, 0.963314)
+bones/41/rotation = Quaternion(0.267393, 6.41288e-05, 0.0107595, 0.963528)
+bones/43/rotation = Quaternion(0.317521, 0.127578, 0.0587549, 0.937791)
+bones/44/rotation = Quaternion(0.269468, 0.0931258, 0.0504327, 0.957168)
+bones/45/rotation = Quaternion(0.267961, 0.0953288, 0.0388294, 0.957915)
+bones/47/rotation = Quaternion(0.0374602, 0.45602, 0.863885, -0.210583)
+bones/48/rotation = Quaternion(-0.775703, 0.0938354, -0.0802727, 0.618899)
+bones/49/rotation = Quaternion(0.765678, -0.0705174, 0.0536111, 0.637095)
+bones/50/rotation = Quaternion(0.331572, 0.030554, -0.101769, 0.937427)
+bones/52/rotation = Quaternion(-0.136962, 0.456245, 0.864453, 0.160634)
+bones/53/rotation = Quaternion(-0.768849, -0.153455, 0.0204109, 0.620408)
+bones/54/rotation = Quaternion(0.73893, 0.131814, -0.0617188, 0.657874)
+bones/55/rotation = Quaternion(0.341311, 0.056238, 0.115327, 0.931152)
+
+[node name="AnimationPlayer" parent="." index="1"]
+libraries = {
+"": ExtResource("2_60vbd")
+}
