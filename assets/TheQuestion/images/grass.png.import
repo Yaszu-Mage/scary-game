@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://3vw1i00v671d"
 path.s3tc="res://.godot/imported/grass.png-04b04b72e87f32f078e0c9432428b94a.s3tc.ctex"
+path.etc2="res://.godot/imported/grass.png-04b04b72e87f32f078e0c9432428b94a.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/TheQuestion/images/grass.png"
-dest_files=["res://.godot/imported/grass.png-04b04b72e87f32f078e0c9432428b94a.s3tc.ctex"]
+dest_files=["res://.godot/imported/grass.png-04b04b72e87f32f078e0c9432428b94a.s3tc.ctex", "res://.godot/imported/grass.png-04b04b72e87f32f078e0c9432428b94a.etc2.ctex"]
 
 [params]
 

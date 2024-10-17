@@ -13,6 +13,7 @@ func _process(delta):
 	if Input.is_action_just_pressed("check") and checker == true:
 		print("check passed")
 		passed = true
+		Global.checkpassed.emit()
 
 func _on_area_2d_area_entered(area):
 	if area.is_in_group("checker"):

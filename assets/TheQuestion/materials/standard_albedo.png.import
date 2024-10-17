@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://by03n0dy7x2lc"
 path.s3tc="res://.godot/imported/standard_albedo.png-f7ad9f41c0baa864c3abda235b3ce257.s3tc.ctex"
+path.etc2="res://.godot/imported/standard_albedo.png-f7ad9f41c0baa864c3abda235b3ce257.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/TheQuestion/materials/standard_albedo.png"
-dest_files=["res://.godot/imported/standard_albedo.png-f7ad9f41c0baa864c3abda235b3ce257.s3tc.ctex"]
+dest_files=["res://.godot/imported/standard_albedo.png-f7ad9f41c0baa864c3abda235b3ce257.s3tc.ctex", "res://.godot/imported/standard_albedo.png-f7ad9f41c0baa864c3abda235b3ce257.etc2.ctex"]
 
 [params]
 

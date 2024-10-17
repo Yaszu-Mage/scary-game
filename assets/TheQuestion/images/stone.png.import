@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://c7685e6j1xpa3"
 path.s3tc="res://.godot/imported/stone.png-c38759b0f5db965166dbd5ab5334edc4.s3tc.ctex"
+path.etc2="res://.godot/imported/stone.png-c38759b0f5db965166dbd5ab5334edc4.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/TheQuestion/images/stone.png"
-dest_files=["res://.godot/imported/stone.png-c38759b0f5db965166dbd5ab5334edc4.s3tc.ctex"]
+dest_files=["res://.godot/imported/stone.png-c38759b0f5db965166dbd5ab5334edc4.s3tc.ctex", "res://.godot/imported/stone.png-c38759b0f5db965166dbd5ab5334edc4.etc2.ctex"]
 
 [params]
 

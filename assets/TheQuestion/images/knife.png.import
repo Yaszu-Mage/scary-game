@@ -4,15 +4,16 @@ importer="texture"
 type="CompressedTexture2D"
 uid="uid://br5rwuux1w7br"
 path.s3tc="res://.godot/imported/knife.png-9e0e7d72e804200b5953efb80c122bdb.s3tc.ctex"
+path.etc2="res://.godot/imported/knife.png-9e0e7d72e804200b5953efb80c122bdb.etc2.ctex"
 metadata={
-"imported_formats": ["s3tc_bptc"],
+"imported_formats": ["s3tc_bptc", "etc2_astc"],
 "vram_texture": true
 }
 
 [deps]
 
 source_file="res://assets/TheQuestion/images/knife.png"
-dest_files=["res://.godot/imported/knife.png-9e0e7d72e804200b5953efb80c122bdb.s3tc.ctex"]
+dest_files=["res://.godot/imported/knife.png-9e0e7d72e804200b5953efb80c122bdb.s3tc.ctex", "res://.godot/imported/knife.png-9e0e7d72e804200b5953efb80c122bdb.etc2.ctex"]
 
 [params]
 

@@ -47,7 +47,8 @@ _data = {
 size = Vector2(14, 20)
 
 [node name="Node2D" type="Node2D"]
-position = Vector2(7, 15)
+position = Vector2(15, 13)
+scale = Vector2(3, 3)
 script = ExtResource("1_06h58")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
