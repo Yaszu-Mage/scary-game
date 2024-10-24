@@ -1,0 +1,35 @@
+[gd_scene load_steps=5 format=3 uid="uid://sxxgdqkxfyqt"]
+
+[ext_resource type="Script" path="res://assets/scripts/mob.gd" id="1_p4sou"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ro2bx"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_hlll7"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_xqjm0"]
+radius = 9.25
+
+[node name="Mob" type="CharacterBody3D"]
+script = ExtResource("1_p4sou")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_ro2bx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_hlll7")
+
+[node name="Area3D" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_xqjm0")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
+[connection signal="velocity_computed" from="NavigationAgent3D" to="." method="_on_navigation_agent_3d_velocity_computed"]
+[connection signal="body_entered" from="Area3D" to="." method="_on_area_3d_body_entered"]
+[connection signal="body_exited" from="Area3D" to="." method="_on_area_3d_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

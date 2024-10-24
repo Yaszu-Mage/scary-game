@@ -1,7 +1,8 @@
-[gd_scene load_steps=13 format=3 uid="uid://d15ug4dn8ohlv"]
+[gd_scene load_steps=15 format=3 uid="uid://d15ug4dn8ohlv"]
 
 [ext_resource type="Texture2D" uid="uid://bh8ytm4ec5f51" path="res://assets/images/level.png" id="1_bpnjh"]
 [ext_resource type="Texture2D" uid="uid://cdlm3qsnekffa" path="res://assets/images/0.png" id="2_sy4ar"]
+[ext_resource type="Script" path="res://assets/scripts/parry.gd" id="3_li6mu"]
 
 [sub_resource type="GDScript" id="GDScript_ewjal"]
 script/source = "extends CharacterBody3D
@@ -61,8 +62,7 @@ func _physics_process(delta):
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir = Input.get_vector(\"ui_left\", \"ui_right\", \"ui_up\", \"ui_down\")
 	var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	
-	if direction:
+	if direction and !Input.is_action_pressed(\"dash\"):
 		ismakingnoise = true
 		velocity.x = direction.x * SPEED * sprintmulti
 		velocity.z = direction.z * SPEED * sprintmulti
@@ -70,11 +70,49 @@ func _physics_process(delta):
 	elif Input.is_action_pressed(\"dash\"):
 		velocity.x = last_dir.x * SPEED * sprintmulti * slide_multiplier
 		velocity.z = last_dir.z * SPEED * sprintmulti * slide_multiplier
-	else:
+	elif !Input.is_action_pressed(\"slide\") and !Input.is_action_pressed(\"dash\") and !direction:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 		ismakingnoise = false
-
+	if Input.is_action_pressed(\"slide\"):
+			var xpos = 0
+			var ypos = 0
+			var zpos = 0
+			if velocity.x > 0:
+				xpos = 1
+			elif round(velocity.x) == 0:
+				xpos = 0
+			else:
+				xpos = -1
+			if velocity.y > 0:
+				ypos = 1
+			elif round(velocity.y) == 0:
+				ypos = 0
+			else:
+				ypos = -1
+			if zpos > 0:
+				zpos = 1
+			elif round(velocity.z) == 0:
+				zpos = 0
+			else:
+				zpos = -1
+			match xpos:
+				1: velocity.x = velocity.x - 0.1
+				0: velocity.x = 0
+				-1: velocity.x = velocity.x + 0.1
+			match ypos:
+				1: velocity.y = velocity.y - 0.1
+				0: velocity.y = 0
+				-1: velocity.y = velocity.y + 0.1
+			match zpos:
+				1: velocity.z = velocity.z - 0.1
+				0: velocity.z = 0
+				-1: velocity.z = velocity.z + 0.1
+			if velocity.z > 20 and Input.is_action_pressed(\"slide\"):
+				velocity.z = 0
+			elif velocity.z < -20 and Input.is_action_pressed(\"slide\"):
+				velocity.z = 0
+			move_and_slide()
 	move_and_slide()
 
 
@@ -262,6 +300,9 @@ _data = {
 "spawn": SubResource("Animation_4u36b")
 }
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_b660t"]
+size = Vector3(1, 1.9375, 1.55493)
+
 [node name="Ron" type="CharacterBody3D" groups=["alive", "player"]]
 script = SubResource("GDScript_ewjal")
 
@@ -314,3 +355,16 @@ texture = ExtResource("2_sy4ar")
 libraries = {
 "": SubResource("AnimationLibrary_xkdww")
 }
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.923725)
+script = ExtResource("3_li6mu")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0146484, -0.277466)
+shape = SubResource("BoxShape3D_b660t")
+
+[node name="Timer" type="Timer" parent="Area3D"]
+wait_time = 0.5
+
+[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]

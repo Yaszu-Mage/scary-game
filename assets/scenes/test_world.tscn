@@ -1,11 +1,11 @@
 [gd_scene load_steps=18 format=3 uid="uid://b6sk61dm22sdv"]
 
 [ext_resource type="PackedScene" uid="uid://d15ug4dn8ohlv" path="res://assets/scenes/ron.tscn" id="1_uqwtc"]
-[ext_resource type="PackedScene" uid="uid://cks12b18bhdwf" path="res://assets/scenes/malenaijin.tscn" id="2_3liaq"]
 [ext_resource type="ArrayMesh" uid="uid://kolci6mx8is2" path="res://assets/TheQuestion/models/MAP2.obj" id="3_hh4kn"]
 [ext_resource type="Texture2D" uid="uid://cgj7gnfada6yc" path="res://assets/TheQuestion/images/path.png" id="4_32x3w"]
 [ext_resource type="Material" uid="uid://yn57tqaspta8" path="res://assets/TheQuestion/materials/rocks.tres" id="5_o6x2p"]
 [ext_resource type="Texture2D" uid="uid://3vw1i00v671d" path="res://assets/TheQuestion/images/grass.png" id="6_8lrih"]
+[ext_resource type="PackedScene" uid="uid://sxxgdqkxfyqt" path="res://assets/scenes/mob.tscn" id="6_28kts"]
 
 [sub_resource type="Gradient" id="Gradient_hxay7"]
 interpolation_mode = 2
@@ -76,9 +76,6 @@ shadow_enabled = true
 [node name="Ron" parent="." instance=ExtResource("1_uqwtc")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.33592, 0)
 
-[node name="CharacterBody3D" parent="." instance=ExtResource("2_3liaq")]
-transform = Transform3D(0.299881, 0.008455, 0, -0.008455, 0.299881, 0, 0, 0, 0.3, 0, 17.7382, 7.75858)
-
 [node name="StaticBody3D2" type="StaticBody3D" parent="."]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
@@ -107,3 +104,6 @@ light_energy = 16.0
 light_indirect_energy = 15.617
 spot_range = 156.272
 spot_angle = 72.0
+
+[node name="Mob" parent="." instance=ExtResource("6_28kts")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.29759, 1.19995, 0)

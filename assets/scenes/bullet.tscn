@@ -4,6 +4,7 @@
 script/source = "extends RigidBody3D
 var dir : Vector3
 var variablesinstantiated = false
+var parried = false
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	await get_tree().create_timer(5.0).timeout
@@ -17,8 +18,10 @@ func _process(delta):
 func _physics_process(delta):
 	if variablesinstantiated:
 		
-		move_and_collide(linear_velocity.move_toward(dir, delta*1987))
-
+		move_and_collide(linear_velocity.move_toward(dir, delta*19))
+	if parried:
+		print(\"bullet recieved parry!\")
+		move_and_collide(linear_velocity.move_toward(Vector3(-dir.x,dir.y,-dir.z), delta*19))
 
 
 func _on_body_shape_entered(body_rid, body, body_shape_index, local_shape_index):
@@ -35,7 +38,7 @@ func _on_body_entered(body):
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_mc5l1"]
 
-[node name="RigidBody3D" type="RigidBody3D" groups=["bullet"]]
+[node name="RigidBody3D" type="RigidBody3D" groups=["bullet", "parryable"]]
 script = SubResource("GDScript_judhh")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
