@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://d15ug4dn8ohlv"]
+[gd_scene load_steps=16 format=3 uid="uid://d15ug4dn8ohlv"]
 
 [ext_resource type="Texture2D" uid="uid://bh8ytm4ec5f51" path="res://assets/images/level.png" id="1_bpnjh"]
 [ext_resource type="Texture2D" uid="uid://cdlm3qsnekffa" path="res://assets/images/0.png" id="2_sy4ar"]
@@ -9,10 +9,11 @@ script/source = "extends CharacterBody3D
 ## Getting Variables
 @onready var cam = $pivot
 const SPEED = 5.0
+var wallrunning = false
 const JUMP_VELOCITY = 4.5
 var stanky = false
 var dash_speed = 4
-
+var wallcurrent = null
 var slide_multiplier = 4
 @onready var pivot = $pivot
 @onready var animation_player = $AnimationPlayer
@@ -44,7 +45,7 @@ func _physics_process(delta):
 		sprintmulti = 1
 		stamina += 0.5
 		$pivot/ProgressBar.value = stamina
-	if not is_on_floor():
+	if not is_on_floor() and !wallrunning:
 		velocity += get_gravity() * delta
 	if is_on_floor():
 		double_jump = false
@@ -128,6 +129,21 @@ func _input(event):
 			cam.rotation.x = clamp(cam.rotation.x, -1.2,1.2)
 	if event.is_action_pressed(\"ui_end\"):
 		get_tree().quit()
+
+
+func _on_area_3d_2_body_entered(body):
+	if body.is_in_group(\"wall\"):
+		if wallrunning:
+			if wallcurrent == body:
+				pass
+			else:
+				if global_position.distance_to(wallcurrent.global_position) < global_position.distance_to(body.global_position):
+					pass
+				else:
+					wallcurrent = body
+		else:
+			wallrunning = true
+			wallcurrent = body
 "
 
 [sub_resource type="BoxMesh" id="BoxMesh_a5k3j"]
@@ -303,6 +319,9 @@ _data = {
 [sub_resource type="BoxShape3D" id="BoxShape3D_b660t"]
 size = Vector3(1, 1.9375, 1.55493)
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_amxko"]
+radius = 1.32491
+
 [node name="Ron" type="CharacterBody3D" groups=["alive", "player"]]
 script = SubResource("GDScript_ewjal")
 
@@ -367,4 +386,10 @@ shape = SubResource("BoxShape3D_b660t")
 [node name="Timer" type="Timer" parent="Area3D"]
 wait_time = 0.5
 
+[node name="Area3D2" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D2"]
+shape = SubResource("SphereShape3D_amxko")
+
 [connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]
+[connection signal="body_entered" from="Area3D2" to="." method="_on_area_3d_2_body_entered"]
